@@ -75,6 +75,48 @@ class RecipeDetail extends Component {
   }
 }
 
+
+class SignIn extends Component {
+  state = {
+    user: "",
+    password: ""
+  }
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.onSubmit(this.state);
+    this.refresh()
+  }
+  refresh = () => {
+    this.setState({
+      user: "",
+      password: ""
+    })
+  }
+
+  render() {
+    return (
+      <>
+      <Modal show={this.props.show} onHide={this.props.onHide}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign In</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={this.handleSubmit}>
+            <input type={Text} placeholder="User" className="form-control mb-1" value={this.state.user} onChange={(event) => this.setState({ user: event.target.value })} />
+            <input type="password" placeholder="Password" className="form-control mb-1" value={this.state.password} onChange={(event) => this.setState({ password: event.target.value })} />
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={this.handleSubmit}>
+            Sign In
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+    )
+  }
+}
+
 class LogIn extends Component {
   state = {
     user: "",
@@ -265,7 +307,7 @@ class RecipeList extends Component {
   }
 
   loadRecipes = () => {
-    console.log("oi");
+    FirebaseService.offDataList('comida/recipe');
     if(this.props.menuActive === "my") {
       FirebaseService.getDataList('comida/recipe', (dataReceived) => this.setState({
         recipes: dataReceived
@@ -344,7 +386,7 @@ class TopMenu extends Component {
                 {this.props.user ? <a className="nav-link" href="#">{this.props.user.user}</a> : <a className="nav-link" href="#" onClick={this.props.handleLogInShow}>Log In</a>}
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Sign In</a>
+                <a className="nav-link" href="#" onClick={this.props.handleSignInShow}>Sign In</a>
               </li>
             </ul>
           </div>
@@ -357,9 +399,11 @@ class TopMenu extends Component {
 class App extends Component {
   state = {
     itemDetail: null,
-    menuActive: "home",
+    menuActive: "list",
+    lateralMenu: "home",
     visibleNewButton: true,
     visibleLogIn: false,
+    visibleSignIn: false,
     user: Cookies.get('user')
   };
   showDetail = (item) => {
@@ -369,20 +413,26 @@ class App extends Component {
     this.changeMenu("detail");
   };
   addItem = (item) => {
-    item.user = this.state.user;
+    item.user = this.state.user.user;
     FirebaseService.pushData('comida/recipe', item);
-    this.changeMenu("home");
+    this.changeMenu("list");
   };
   
   loadMenu = () => {
-    if (this.state.menuActive === "home" || this.state.menuActive === "my") {
-      console.log(this.state.menuActive);
-      return <RecipeList  showDetail={this.showDetail} user={this.state.user} menuActive={this.state.menuActive} />
+    if (this.state.menuActive === "list") {
+      return <RecipeList key={this.state.lateralMenu} showDetail={this.showDetail} user={this.state.user} menuActive={this.state.lateralMenu} />
     } else if (this.state.menuActive === "new") {
       return <RecipeForm onSubmit={this.addItem} />
     } else if (this.state.menuActive === "detail") {
       return <RecipeDetail recipe={this.state.itemDetail} />
     }
+  }
+
+  changeLateralMenu = (menu) => {
+    this.setState({
+      lateralMenu: menu,
+      menuActive: "list"
+    })
   }
 
   changeMenu = (menu) => {
@@ -405,6 +455,15 @@ class App extends Component {
     event.preventDefault();
   }
 
+  handleSignInClose = () => {
+    this.setState({ visibleSignIn: false });
+  }
+
+  handleSignInShow = (event) => {
+    this.setState({ visibleSignIn: true });
+    event.preventDefault();
+  }
+
   handleLogIn = (state) => {
     FirebaseService.getDataList('comida/user', (dataReceived) => {
       dataReceived = dataReceived.filter(item => item.user === state.user);
@@ -419,12 +478,27 @@ class App extends Component {
     }, null);
   }
 
+  handleSignIn = (state) => {
+    FirebaseService.getDataList('comida/user', (dataReceived) => {
+      FirebaseService.offDataList('comida/user');
+      dataReceived = dataReceived.filter(item => item.user === state.user);
+      if(dataReceived.length > 0) {
+        alert("Usuário já existe");
+        return;
+      }
+      FirebaseService.pushData('comida/user', state);
+      this.setState({ user: state, visibleSignIn: false });
+      Cookies.set('user', state, { expires: 500 })
+      return;
+    }, null);
+  }
+
   render() {
     return (
       <div className="wrapper">
-        <LateralMenu onChangeMenu={this.changeMenu} user={this.state.user} menu={this.state.menuActive} />
+        <LateralMenu onChangeMenu={this.changeLateralMenu} user={this.state.user} menu={this.state.lateralMenu} />
         <div id="content">
-          <TopMenu user={this.state.user} handleLogInShow={this.handleLogInShow} />
+          <TopMenu user={this.state.user} handleLogInShow={this.handleLogInShow} handleSignInShow={this.handleSignInShow} />
 
           <div className="App">
             {this.loadMenu()}
@@ -432,6 +506,7 @@ class App extends Component {
               <i className="fa fa-plus my-float"></i>
             </a>
             <LogIn onSubmit={this.handleLogIn} onHide={this.handleLogInClose} show={this.state.visibleLogIn} />
+            <SignIn onSubmit={this.handleSignIn} onHide={this.handleSignInClose} show={this.state.visibleSignIn} />
           </div>
         </div>
       </div>
