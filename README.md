@@ -1,7 +1,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-An android application to see movies informations.
+A web app to create recipes, evaluate, discovery and learning to cook. 
 
 ## Available Scripts
 
