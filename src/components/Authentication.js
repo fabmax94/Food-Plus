@@ -24,7 +24,7 @@ export class SignIn extends Component {
             <>
                 <Modal show={this.props.show} onHide={this.props.onHide}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Cadastrar</Modal.Title>
+                        <Modal.Title>Sign Up</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form onSubmit={this.handleSubmit}>
@@ -34,7 +34,7 @@ export class SignIn extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={this.handleSubmit}>
-                            Cadastrar
+                        Sign Up
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -65,7 +65,7 @@ export class LogIn extends Component {
             <>
                 <Modal show={this.props.show} onHide={this.props.onHide}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Entrar</Modal.Title>
+                        <Modal.Title>Log In</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form onSubmit={this.handleSubmit}>
@@ -75,7 +75,7 @@ export class LogIn extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={this.handleSubmit}>
-                            Entrar
+                        Log In
                         </Button>
                     </Modal.Footer>
                 </Modal>

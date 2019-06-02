@@ -56,15 +56,15 @@ export class RecipeDetail extends Component {
                             </div>
                         </div>
                         <div className="col-md-3 recipe-info-container">
-                            <span className="recipe-info">Categoria</span>
+                            <span className="recipe-info">Category</span>
                             <span className="recipe-info recipe-info-value">{this.props.recipe.foodType}</span>
                         </div>
                         <div className="col-md-3 recipe-info-container">
-                            <span className="recipe-info">Rendimento</span>
+                            <span className="recipe-info">Portions</span>
                             <span className="recipe-info recipe-info-value">{this.props.recipe.portion} porções</span>
                         </div>
                         <div className="col-md-3 recipe-info-container">
-                            <span className="recipe-info">Preparo</span>
+                            <span className="recipe-info">Prepare time</span>
                             <span className="recipe-info recipe-info-value">{this.props.recipe.timeToPrepare} min</span>
                         </div>
                         </div>
@@ -73,7 +73,7 @@ export class RecipeDetail extends Component {
                 </div>
             </div>
             <div className="card-container bg-light">
-                <h2 className="col-md-12" style={{ textAlign: "start" }}>Ingredientes</h2>
+                <h2 className="col-md-12" style={{ textAlign: "start" }}>Ingredients</h2>
                 <ul className="detail-list">
                     {this.props.recipe.ingredients.map((ingredient, index) =>
                         <li key={index}>{ingredient}</li>
@@ -81,7 +81,7 @@ export class RecipeDetail extends Component {
                 </ul>
             </div>
             <div className="card-container bg-light">
-                <h2 className="col-md-12" style={{ textAlign: "start" }}>Modo de Preparo</h2>
+                <h2 className="col-md-12" style={{ textAlign: "start" }}>Prepare Mode</h2>
                 <ol className="detail-list">
                     {this.props.recipe.steps.map((step, index) =>
                         <li key={index}><span>{step}</span></li>
@@ -90,7 +90,7 @@ export class RecipeDetail extends Component {
             </div>
 
             <div className="card-container bg-light">
-                <h2 className="col-md-12" style={{ textAlign: "start" }}>Comentários</h2>
+                <h2 className="col-md-12" style={{ textAlign: "start" }}>Comments</h2>
                 <Forum recipe={this.props.recipe} user={this.props.user.user} />
             </div>
 
@@ -136,8 +136,15 @@ export class RecipeForm extends Component {
     }
     handleSubmit = (event) => {
         event.preventDefault();
+        if(!this.validate()) {
+            alert("Please, fill the fields");
+            return;
+        }
         this.props.onSubmit(this.state);
         this.refresh()
+    }
+    validate = () => {
+        return this.state.name && this.state.files.length && this.state.timeToPrepare && this.state.portion && this.state.foodType;
     }
     refresh = () => {
         this.setState({
@@ -193,20 +200,20 @@ export class RecipeForm extends Component {
                             </div>
                         </div>
                         <select className="form-control" value={this.state.foodType} onChange={(event) => this.setState({ foodType: event.target.value })}>
-                            <option value="">Escolha uma categoria</option>
-                            <option value="Bolos e tortas doces">Bolos e tortas doces</option>
-                            <option value="Carnes">Carnes</option>
-                            <option value="Aves">Aves</option>
-                            <option value="Peixes e frutos do mar">Peixes e frutos do mar</option>
-                            <option value="Saladas, molhos e acompanhamentos">Saladas, molhos e acompanhamentos</option>
-                            <option value="Sopas">Sopas</option>
-                            <option value="Massas">Massas</option>
-                            <option value="Bebidas">Bebidas</option>
-                            <option value="Doces e sobremesas">Doces e sobremesas</option>
-                            <option value="Lanches">Lanches</option>
-                            <option value="Prato Único">Prato Único</option>
+                            <option value="">Choose a category</option>
+                            <option value="Sweet cakes and pies">Sweet cakes and pies</option>
+                            <option value="Meat">Meat</option>
+                            <option value="Birds">Birds</option>
+                            <option value="Fishes and sea food">Fishes and sea food</option>
+                            <option value="Salads, sauces and side dishes">Salads, sauces and side dishes</option>
+                            <option value="Soups">Soups</option>
+                            <option value="Pasta">Pasta</option>
+                            <option value="Drinks">Drinks</option>
+                            <option value="Sweets and desserts">Sweets and desserts</option>
+                            <option value="Snacks">Snacks</option>
+                            <option value="Single Plate">Single Plate</option>
                             <option value="Light">Light</option>
-                            <option value="Alimentação Saudável">Alimentação Saudável</option>
+                            <option value="Healthy eating">Healthy eating</option>
                         </select>
                     </div>
                     <div className="form-group col-md-6" style={{ display: "inline-block" }}>
@@ -286,7 +293,7 @@ export class RecipeList extends Component {
                         <div className="card-body">
                             <h5 className="card-title">{recipe.name}</h5>
                             <h6 className="card-subtitle mb-2 text-muted">{recipe.foodType}</h6>
-                            <p className="card-text">Tempo de preparo: {recipe.timeToPrepare} Porções: {recipe.portion}</p>
+                            <p className="card-text">Prepare time: {recipe.timeToPrepare} Portions: {recipe.portion}</p>
                             <a href="#" className="btn btn-primary" onClick={(event) => this.handleDetail(event, recipe)}>Detail</a>
                         </div>
                     </div>
