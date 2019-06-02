@@ -14,10 +14,10 @@ export class LateralMenu extends Component {
 
                 <ul className="list-unstyled components">
                     <li className={this.props.menu === "home" ? "active" : ""}>
-                        <a href="#" onClick={(event) => this.changeMenu(event, "home")}>Home</a>
+                        <a href="#" onClick={(event) => this.changeMenu(event, "home")}>Página Inicial</a>
                     </li>
                     <li className={this.props.menu === "my" ? "active" : ""}>
-                        <a href="#" onClick={(event) => this.changeMenu(event, "my")} style={{ display: this.props.user ? "block" : "none" }}>My Recipes</a>
+                        <a href="#" onClick={(event) => this.changeMenu(event, "my")} style={{ display: this.props.user ? "block" : "none" }}>Minhas Receitas</a>
                     </li>
                 </ul>
             </nav>
@@ -41,10 +41,10 @@ export class TopMenu extends Component {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="nav navbar-nav ml-auto">
                             <li className="nav-item active">
-                                {this.props.user ? <a className="nav-link" href="#">{this.props.user.user}</a> : <a className="nav-link" href="#" onClick={this.props.handleLogInShow}>Log In</a>}
+                                {this.props.user ? <a className="nav-link" href="#">{this.props.user.user}</a> : <a className="nav-link" href="#" onClick={this.props.handleLogInShow}>Entrar</a>}
                             </li>
                             <li className="nav-item" style={this.props.user ? {display: "none"} : {display:"block"}}>
-                                <a className="nav-link" href="#" onClick={this.props.handleSignInShow}>Sign Up</a>
+                                <a className="nav-link" href="#" onClick={this.props.handleSignInShow}>Cadastrar</a>
                             </li>
                             
                         </ul>

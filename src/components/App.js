@@ -42,9 +42,9 @@ class App extends Component {
 
   changeLateralMenu = (menu) => {
     this.setState({
-      lateralMenu: menu,
-      menuActive: "list"
+      lateralMenu: menu
     })
+    this.changeMenu("list");
   }
 
   changeMenu = (menu) => {

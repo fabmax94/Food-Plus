@@ -10,7 +10,7 @@ export class RecipeDetail extends Component {
             <div className="card-container bg-light">
                 <div className="row">
                     <h2 className="col-md-12" style={{ textAlign: "start" }}>{this.props.recipe.name}</h2>
-                    <div className="carousel slide col-md-8" data-ride="carousel" id="carouselExampleControls">
+                    <div className="carousel slide col-md-12" data-ride="carousel" id="carouselExampleControls">
                         <div className="carousel-inner">
                             {this.props.recipe.files.map((file, index) =>
                                 <div key={index} className={index === 0 ? "carousel-item active" : "carousel-item"}>
@@ -27,11 +27,12 @@ export class RecipeDetail extends Component {
                             <span className="sr-only">Next</span>
                         </a>
                     </div>
-
-                    <div className="col-md-3" style={{ paddingLeft: "28px", paddingRight: "28px", backgroundColor: "#f0f0f0" }}>
-                        <div className="col-md-12 recipe-info-container" style={{ borderBottom: "solid grey 1px" }}>
+                    <div className="col-md-12 recipe-info-master-container">                
+                    <div className="col-md-12 recipe-info-master-child-container">
+                        <div className="row">
+                        <div className="col-md-3 recipe-info-container">
                             <div class="row">
-                                <div class="col-sm-3 col-md-12">
+                                <div class="col-md-12">
                                     <div class="rating-block">
                                         <h4>Average user rating</h4>
                                         <h2 class="bold padding-bottom-7">4.3 <small>/ 5</small></h2>
@@ -54,17 +55,19 @@ export class RecipeDetail extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-12 recipe-info-container" style={{ borderBottom: "solid grey 1px" }}>
+                        <div className="col-md-3 recipe-info-container">
                             <span className="recipe-info">Categoria</span>
                             <span className="recipe-info recipe-info-value">{this.props.recipe.foodType}</span>
                         </div>
-                        <div className="col-md-12 recipe-info-container">
+                        <div className="col-md-3 recipe-info-container">
                             <span className="recipe-info">Rendimento</span>
                             <span className="recipe-info recipe-info-value">{this.props.recipe.portion} porções</span>
                         </div>
-                        <div className="col-md-12 recipe-info-container" style={{ borderTop: "solid grey 1px" }}>
+                        <div className="col-md-3 recipe-info-container">
                             <span className="recipe-info">Preparo</span>
                             <span className="recipe-info recipe-info-value">{this.props.recipe.timeToPrepare} min</span>
+                        </div>
+                        </div>
                         </div>
                     </div>
                 </div>
