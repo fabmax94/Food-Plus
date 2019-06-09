@@ -47,10 +47,17 @@ export class FirebaseService {
     }
 
     static pushData = (node, objToSubmit) => {
-        const ref = firebaseDatabase.ref(node).push();
-        const id = firebaseDatabase.ref(node).push().key;
+        let ref;
+        if(objToSubmit.key) {
+            ref = firebaseDatabase.ref(node).child(objToSubmit.key);
+        } else {
+            ref = firebaseDatabase.ref(node).push();
+        }
         ref.set(objToSubmit);
-        return id;
+    };
+
+    static removeData = (node, key) => {
+        firebaseDatabase.ref(node).child(key).remove();
     };
 
 }

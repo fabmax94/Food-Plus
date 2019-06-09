@@ -18,25 +18,27 @@ class App extends Component {
     visibleSignIn: false,
     user: Cookies.get('user')
   };
+
   showDetail = (item) => {
     this.setState({
       itemDetail: item
     });
     this.changeMenu("detail");
   };
-  addItem = (item) => {
-    item.user = this.state.user.user;
-    FirebaseService.pushData('comida/recipe', item);
-    this.changeMenu("list");
-  };
+
+  cleanDetail = () => {
+    this.setState({
+      itemDetail: null
+    })
+  }
 
   loadMenu = () => {
     if (this.state.menuActive === "list") {
-      return <RecipeList key={this.state.lateralMenu} showDetail={this.showDetail} user={this.state.user} menuActive={this.state.lateralMenu} />
+      return <RecipeList key={this.state.lateralMenu} showDetail={this.showDetail} user={this.state.user} menuActive={this.state.lateralMenu} cleanDetail={this.cleanDetail} />
     } else if (this.state.menuActive === "new") {
-      return <RecipeForm onSubmit={this.addItem} />
+      return <RecipeForm handleSumit={() => this.changeMenu("list")} user={this.state.user} recipe={this.state.itemDetail} backToList={() => this.changeMenu("list")} />
     } else if (this.state.menuActive === "detail") {
-      return <RecipeDetail recipe={this.state.itemDetail} user={this.state.user} />
+      return <RecipeDetail recipe={this.state.itemDetail} user={this.state.user} handleEdit={() => this.changeMenu("new")} backToList={() => this.changeMenu("list")} />
     }
   }
 
